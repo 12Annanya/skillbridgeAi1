@@ -1,53 +1,123 @@
-<form
-  onSubmit={(e) => {
+import "./Auth.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { FaGoogle, FaGithub } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
+import { FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+
+function Login() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    alert("Working");
-  }}
->
-<button
-  type="button"
-  style={{
-    width: "200px",
-    height: "50px",
-    background: "red",
-    color: "white",
-    cursor: "pointer"
-  }}
-  onClick={() => alert("Working")}
->
-  Test Button
-</button>
->
-  Login
-</button>
-</form>
 
-  <div className="input-box">
-    ...
-  </div>
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
 
-  <div className="input-box">
-    ...
-  </div>
+    navigate("/dashboard");
+  };
 
-  <div className="row">
+  return (
+    <div className="auth-page">
 
-    <label>
-      <input type="checkbox" />
-      Remember me
-    </label>
+      <div className="blob blob1"></div>
+      <div className="blob blob2"></div>
 
-    <Link to="/">
-      Forgot Password?
-    </Link>
+      <div className="auth-card">
 
-  </div>
+        <h2>Welcome Back 👋</h2>
 
-  <button
-    type="submit"
-    className="login-btn2"
-  >
-    Login
+        <p>
+          Sign in to continue your SkillBridge AI journey.
+        </p>
+
+        <form onSubmit={handleLogin}>
+
+          <div className="input-box">
+            <HiOutlineMail />
+
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="input-box">
+            <FiLock />
+
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
+            />
+
+            {showPassword ? (
+              <FiEyeOff
+                className="eye"
+                onClick={()=>setShowPassword(false)}
+              />
+            ) : (
+              <FiEye
+                className="eye"
+                onClick={()=>setShowPassword(true)}
+              />
+            )}
+
+          </div>
+
+          <div className="row">
+
+            <label>
+              <input type="checkbox"/>
+              Remember me
+            </label>
+
+            <Link to="/">
+              Forgot Password?
+            </Link>
+
+          </div>
+
+          <button className="login-btn2">
+            Login
+          </button>
+
+        </form>
+
+        <div className="divider">
+          <span>OR</span>
+        </div>
+
+     <div className="social-buttons">
+  <button className="social">
+    <FaGoogle />
+    <span>Google</span>
   </button>
 
-</form>
+  <button className="social">
+    <FaGithub />
+    <span>GitHub</span>
+  </button>
+</div>
+
+        <div className="bottom">
+          Don't have an account?
+          <Link to="/signup"> Sign Up</Link>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default Login;
