@@ -10,18 +10,43 @@ function Navbar() {
         <h2>SkillBridgeAI</h2>
       </div>
 
+
       <div className="nav-links">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/resume">Resume</NavLink>
-        <NavLink to="/analysis">About us</NavLink>
-        <NavLink to="/dashboard">Dashboard</NavLink>
+
+        <NavLink to="/">
+          Home
+        </NavLink>
+
+
+        <NavLink to="/resume">
+          Resume
+        </NavLink>
+
+
+        <NavLink to="/about">
+          About Us
+        </NavLink>
+
+
+        <NavLink to="/dashboard">
+          Dashboard
+        </NavLink>
+
       </div>
 
+
+
       <div className="nav-buttons">
-        <NavLink to="/login" className="login-btn">
+
+        <NavLink 
+          to="/login" 
+          className="login-btn"
+        >
           Login
         </NavLink>
+
       </div>
+
 
     </nav>
   );
