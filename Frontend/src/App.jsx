@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ResumeUpload from "./pages/ResumeUpload";
-import Analysis from "./pages/Analysis";
+import Analysis from "./components/Analysis";
 
 function App() {
   const location = useLocation();

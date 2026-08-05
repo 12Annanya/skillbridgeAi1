@@ -23,6 +23,14 @@ function Login() {
     navigate("/dashboard");
   };
 
+  const openGoogle = () => {
+    window.open("https://accounts.google.com/", "_blank");
+  };
+
+  const openGithub = () => {
+    window.open("https://github.com/login", "_blank");
+  };
+
   return (
     <div className="auth-page">
 
@@ -46,7 +54,7 @@ function Login() {
               type="email"
               placeholder="Email Address"
               value={email}
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -57,18 +65,18 @@ function Login() {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              onChange={(e)=>setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
             {showPassword ? (
               <FiEyeOff
                 className="eye"
-                onClick={()=>setShowPassword(false)}
+                onClick={() => setShowPassword(false)}
               />
             ) : (
               <FiEye
                 className="eye"
-                onClick={()=>setShowPassword(true)}
+                onClick={() => setShowPassword(true)}
               />
             )}
 
@@ -77,7 +85,7 @@ function Login() {
           <div className="row">
 
             <label>
-              <input type="checkbox"/>
+              <input type="checkbox" />
               Remember me
             </label>
 
@@ -87,7 +95,7 @@ function Login() {
 
           </div>
 
-          <button className="login-btn2">
+          <button type="submit" className="login-btn2">
             Login
           </button>
 
@@ -97,17 +105,25 @@ function Login() {
           <span>OR</span>
         </div>
 
-     <div className="social-buttons">
-  <button className="social">
-    <FaGoogle />
-    <span>Google</span>
-  </button>
+        <div className="social-buttons">
 
-  <button className="social">
-    <FaGithub />
-    <span>GitHub</span>
-  </button>
-</div>
+          <button
+            className="social"
+            onClick={openGoogle}
+          >
+            <FaGoogle />
+            Google
+          </button>
+
+          <button
+            className="social"
+            onClick={openGithub}
+          >
+            <FaGithub />
+            GitHub
+          </button>
+
+        </div>
 
         <div className="bottom">
           Don't have an account?
