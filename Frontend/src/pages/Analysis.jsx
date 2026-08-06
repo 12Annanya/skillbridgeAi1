@@ -1,5 +1,20 @@
 import "./Analysis.css";
 
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import {
+  FaBrain,
+  FaChartLine,
+  FaRobot,
+  FaCode,
+  FaAward,
+  FaBullseye,
+  FaLaptopCode,
+  FaGraduationCap
+} from "react-icons/fa";
+
 import {
   RadarChart,
   Radar,
@@ -13,474 +28,382 @@ import {
   Tooltip
 } from "recharts";
 
-import { motion } from "framer-motion";
+import AISummary from "../components/AISummary";
+import { analyzeResume } from "./analyzeResume";
 
-import {
-  FaCode,
-  FaReact,
-  FaDatabase,
-  FaProjectDiagram,
-  FaArrowLeft
-} from "react-icons/fa";
+function Analysis() {
 
+  const location = useLocation();
 
-function Analysis(){
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-const skills=[
-{
-subject:"React",
-A:50
-},
-{
-subject:"JavaScript",
-A:75
-},
-{
-subject:"DSA",
-A:60
-},
-{
-subject:"Backend",
-A:35
-},
-{
-subject:"Database",
-A:55
-},
-{
-subject:"System Design",
-A:25
-}
+  useEffect(() => {
+
+    let savedData = location.state;
+
+    if (savedData) {
+      sessionStorage.setItem(
+        "resumeData",
+        JSON.stringify(savedData)
+      );
+    }
+
+    if (!savedData) {
+      const stored =
+        sessionStorage.getItem("resumeData");
+
+      if (stored) {
+        savedData = JSON.parse(stored);
+      }
+    }
+
+    if (!savedData) {
+      setError("No Resume Found");
+      setLoading(false);
+      return;
+    }
+
+    analyzeResume(savedData)
+
+      .then((response) => {
+        setData(response);
+      })
+
+      .catch((err) => {
+        setError(err.message);
+      })
+
+      .finally(() => {
+        setLoading(false);
+      });
+
+  }, [location.state]);
+
+  if (loading) {
+    return (
+      <div className="loading-page">
+        <div className="loader"></div>
+        <h2>AI is analyzing your Resume...</h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="loading-page">
+        <h2>{error}</h2>
+      </div>
+    );
+  }
+  const skills = [
+  { subject: "React", value: 85 },
+  { subject: "JavaScript", value: 80 },
+  { subject: "Backend", value: 60 },
+  { subject: "DSA", value: 70 },
+  { subject: "Database", value: 65 },
+  { subject: "System Design", value: 40 },
 ];
 
-
-const studyData=[
-{
-day:"Mon",
-hours:4
-},
-{
-day:"Tue",
-hours:5
-},
-{
-day:"Wed",
-hours:3
-},
-{
-day:"Thu",
-hours:6
-},
-{
-day:"Fri",
-hours:5
-},
-{
-day:"Sat",
-hours:7
-},
-{
-day:"Sun",
-hours:3
-}
-
+const studyData = [
+  { day: "Mon", hours: 4 },
+  { day: "Tue", hours: 5 },
+  { day: "Wed", hours: 3 },
+  { day: "Thu", hours: 6 },
+  { day: "Fri", hours: 5 },
+  { day: "Sat", hours: 7 },
+  { day: "Sun", hours: 2 },
 ];
 
-
-return(
+return (
 
 <div className="analysis-page">
 
-
 <div className="analysis-container">
 
-
-<motion.h1
-initial={{opacity:0,y:-30}}
+<motion.div
+className="dashboard-header"
+initial={{opacity:0,y:-40}}
 animate={{opacity:1,y:0}}
+transition={{duration:.6}}
 >
-AI Career Readiness Analysis
-</motion.h1>
-
-
-<p className="subtitle">
-Personalized roadmap based on your skills and target role
-</p>
-
-
-
-{/* SCORE */}
-
-
-<motion.div 
-className="score-card"
-whileHover={{scale:1.03}}
->
-
 
 <div>
 
-<h3>
-Overall Readiness Score
-</h3>
+<h1>
 
+<FaBrain/>
 
-<h2 className="score">
-72%
-</h2>
+AI Resume Dashboard
 
+</h1>
 
 <p>
-You are 28% away from industry ready
+
+Target Role
+
+<b> {data.role || "Software Engineer"}</b>
+
 </p>
 
 </div>
 
+<div className="overall-score">
 
-<div className="chart-icon">
-🚀
+<h2>{data.readinessPercent || 0}%</h2>
+
+<span>Ready</span>
+
 </div>
-
 
 </motion.div>
 
+<div className="score-grid">
 
+<div className="score-card">
 
+<div className="icon">
 
+<FaAward/>
 
-{/* SKILL GRAPH */}
-
-
-
-<div className="section-card">
-
+</div>
 
 <h2>
-<FaCode/>
-Skill Gap Analysis
+
+{data.readinessPercent || 0}%
+
 </h2>
 
+<p>
 
+Readiness Score
 
-<div className="chart-box">
+</p>
 
-<ResponsiveContainer width="100%" height={350}>
+<div className="progress">
 
-
-<RadarChart data={skills}>
-
-
-<PolarGrid/>
-
-
-<PolarAngleAxis dataKey="subject"/>
-
-
-<Radar
-dataKey="A"
-stroke="#818cf8"
-fill="#6366f1"
-fillOpacity={0.6}
-/>
-
-
-</RadarChart>
-
-
-</ResponsiveContainer>
-
+<div
+className="fill"
+style={{
+width:`${data.readinessPercent || 0}%`
+}}
+></div>
 
 </div>
 
-
-
 </div>
 
+<div className="score-card">
 
+<div className="icon">
 
+<FaBullseye/>
 
-
-{/* STUDY PLAN */}
-
-
-<div className="section-card">
-
+</div>
 
 <h2>
-📚 What You Should Study
+
+85%
+
 </h2>
 
-
-<div className="study-grid">
-
-
-
-<div className="study-item">
-
-<FaReact/>
-
-<h3>
-Advanced React
-</h3>
-
 <p>
-Hooks, Redux Toolkit,
-Context API, Performance
+
+ATS Score
+
 </p>
 
-<span>
-15 Days | 2 hrs/day
-</span>
+<div className="progress">
+
+<div
+className="fill"
+style={{width:"85%"}}
+></div>
 
 </div>
 
-
-
-
-
-<div className="study-item">
-
-
-<FaDatabase/>
-
-
-<h3>
-Backend Development
-</h3>
-
-<p>
-Node.js, Express,
-MongoDB, Authentication
-</p>
-
-<span>
-30 Days | 1.5 hrs/day
-</span>
-
-
 </div>
 
+<div className="score-card">
 
+<div className="icon">
 
-
-
-<div className="study-item">
-
-
-<FaProjectDiagram/>
-
-
-<h3>
-DSA Preparation
-</h3>
-
-
-<p>
-Arrays, Trees,
-Graphs, DP
-</p>
-
-
-<span>
-90 min daily
-</span>
-
+<FaLaptopCode/>
 
 </div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-{/* WEEKLY GRAPH */}
-
-
-
-<div className="section-card">
-
 
 <h2>
-Weekly Study Hours
+
+78%
+
 </h2>
 
+<p>
 
-<ResponsiveContainer width="100%" height={300}>
+Technical
 
+</p>
 
-<BarChart data={studyData}>
+<div className="progress">
 
-
-<XAxis dataKey="day"/>
-
-<YAxis/>
-
-
-<Tooltip/>
-
-
-<Bar
-dataKey="hours"
-fill="#8b5cf6"
-/>
-
-
-</BarChart>
-
-
-</ResponsiveContainer>
-
-
+<div
+className="fill"
+style={{width:"78%"}}
+></div>
 
 </div>
 
+</div>
 
+<div className="score-card">
 
+<div className="icon">
 
+<FaGraduationCap/>
 
-
-
-{/* ROADMAP */}
-
-
-<div className="section-card">
-
+</div>
 
 <h2>
-Learning Roadmap
+
+92%
+
 </h2>
 
-
-
-<div className="roadmap">
-
-
-<div>
-<h3>
-Month 1
-</h3>
-
 <p>
-React Advanced + Frontend Projects
+
+Learning
+
 </p>
 
-</div>
+<div className="progress">
 
-
-
-<div>
-<h3>
-Month 2
-</h3>
-
-<p>
-Backend + Database + Deployment
-</p>
+<div
+className="fill"
+style={{width:"92%"}}
+></div>
 
 </div>
 
-
-
-<div>
-<h3>
-Month 3
-</h3>
-
-<p>
-DSA + System Design + Interviews
-</p>
-
 </div>
 
-
 </div>
+{/* Charts */}
 
+<div className="charts">
 
-</div>
+  <div className="chart-card">
 
+    <h2>🔥 Skill Gap Analysis</h2>
 
+    <ResponsiveContainer width="100%" height={320}>
 
+      <RadarChart data={skills}>
 
+        <PolarGrid />
 
+        <PolarAngleAxis dataKey="subject" />
 
+        <Radar
+          dataKey="value"
+          stroke="#8b5cf6"
+          fill="#8b5cf6"
+          fillOpacity={0.6}
+        />
 
+      </RadarChart>
 
-{/* PROJECTS */}
+    </ResponsiveContainer>
 
-
-<div className="section-card">
-
-
-<h2>
-Recommended Projects
-</h2>
-
-
-
-<div className="project">
-
-
-<h3>
-AI Resume Analyzer
-</h3>
-
-<p>
-React + Node + AI API
-</p>
-
-
-</div>
+  </div>
 
 
 
-<div className="project">
+  <div className="chart-card">
 
+    <h2>📚 Weekly Study Hours</h2>
 
-<h3>
-Task Management SaaS
-</h3>
+    <ResponsiveContainer width="100%" height={320}>
 
+      <BarChart data={studyData}>
 
-<p>
-Authentication + Database + Deployment
-</p>
+        <XAxis dataKey="day" />
 
+        <YAxis />
+
+        <Tooltip />
+
+        <Bar
+          dataKey="hours"
+          fill="#7c3aed"
+          radius={[8, 8, 0, 0]}
+        />
+
+      </BarChart>
+
+    </ResponsiveContainer>
+
+  </div>
 
 </div>
 
 
 
+{/* AI Summary */}
+
+<AISummary data={data} />
+
+
+
+{/* Footer */}
+
+<motion.div
+  className="recommend-card"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+>
+
+  <FaBrain />
+
+  <h2>Career Recommendation</h2>
+
+  <p style={{ marginBottom: "20px" }}>
+    {data.overallSummary ||
+      "Continue improving your projects, DSA, backend development and interview preparation to increase your placement chances."}
+  </p>
+
+  <ul>
+
+    {data.careerAdvice?.length > 0 ? (
+
+      data.careerAdvice.map((item, index) => (
+
+        <li key={index}>{item}</li>
+
+      ))
+
+    ) : (
+
+      <>
+        <li>Build 2 production-level projects.</li>
+        <li>Solve DSA daily.</li>
+        <li>Learn Backend Development.</li>
+        <li>Deploy your projects online.</li>
+      </>
+
+    )}
+
+  </ul>
+
+</motion.div>
+
 </div>
 
-
-
-
-
-<button className="back-btn">
-
-<FaArrowLeft/>
- Back
-
-</button>
-
-
-
 </div>
 
-
-</div>
-
-
-)
+);
 
 }
-
 
 export default Analysis;

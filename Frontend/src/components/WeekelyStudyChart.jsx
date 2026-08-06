@@ -1,4 +1,4 @@
-import "./ProgressBar.css";
+import "./ATSAnalysis.jsx";
 
 function ProgressBar({ hoursPerWeek, setHoursPerWeek, weeks }) {
   return (
