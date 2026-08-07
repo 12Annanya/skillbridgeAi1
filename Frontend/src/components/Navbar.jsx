@@ -20,13 +20,20 @@ function Navbar() {
       );
     };
 
-    window.addEventListener("auth-change", handleAuthChange);
+    window.addEventListener(
+      "auth-change",
+      handleAuthChange
+    );
 
     return () => {
-      window.removeEventListener("auth-change", handleAuthChange);
+      window.removeEventListener(
+        "auth-change",
+        handleAuthChange
+      );
     };
   }, []);
 
+  // ================= LOGOUT =================
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userEmail");
@@ -34,20 +41,21 @@ function Navbar() {
     setIsLoggedIn(false);
     setShowProfile(false);
 
-    navigate("/login");
+    // After logout → Home
+    navigate("/");
   };
 
   return (
     <nav className="navbar">
 
-      {/* LOGO */}
+      {/* ================= LOGO ================= */}
       <NavLink to="/" className="logo">
         <div className="logo-dot"></div>
         <h2>SkillBridgeAI</h2>
       </NavLink>
 
 
-      {/* NAVIGATION */}
+      {/* ================= NAVIGATION ================= */}
       <div className="nav-links">
 
         <NavLink to="/">
@@ -65,7 +73,7 @@ function Navbar() {
       </div>
 
 
-      {/* RIGHT SIDE */}
+      {/* ================= RIGHT SIDE ================= */}
       <div className="nav-buttons">
 
         {!isLoggedIn ? (
@@ -81,6 +89,7 @@ function Navbar() {
 
           <div className="profile-wrapper">
 
+            {/* PROFILE BUTTON */}
             <button
               className="profile-btn"
               onClick={() =>
@@ -95,12 +104,13 @@ function Navbar() {
               <span>Profile</span>
 
               <span className="profile-arrow">
-                ▾
+                {showProfile ? "▴" : "▾"}
               </span>
 
             </button>
 
 
+            {/* PROFILE DROPDOWN */}
             {showProfile && (
 
               <div className="profile-dropdown">
@@ -112,7 +122,9 @@ function Navbar() {
                   </div>
 
                   <div>
-                    <strong>Welcome Back!</strong>
+                    <strong>
+                      Welcome Back!
+                    </strong>
 
                     <span>
                       Career Explorer
@@ -125,18 +137,20 @@ function Navbar() {
                 <div className="profile-divider"></div>
 
 
+                {/* HOME */}
                 <button
                   className="profile-option"
                   onClick={() => {
                     setShowProfile(false);
-                    navigate("/dashboard");
+                    navigate("/");
                   }}
                 >
                   <FaUser />
-                  Dashboard
+                  Home
                 </button>
 
 
+                {/* LOGOUT */}
                 <button
                   className="profile-option logout"
                   onClick={handleLogout}
