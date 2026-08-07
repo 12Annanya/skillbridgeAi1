@@ -4,17 +4,17 @@ import { GoogleGenAI } from "@google/genai";
 const router = express.Router();
 
 router.post("/analyze", async (req, res) => {
-  try {
-    const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-    });
+    try {
+        const ai = new GoogleGenAI({
+            apiKey: process.env.GEMINI_API_KEY,
+        });
 
-    const { resumeText, role } = req.body;
+        const { resumeText, role } = req.body;
 
-    console.log("Received Request:");
-    console.log(req.body);
+        console.log("Received Request:");
+        console.log({ role, resumeTextLength: resumeText?.length });
 
-    const prompt = `
+        const prompt = `
 You are an AI Resume Analyzer.
 
 Target Role:
@@ -23,59 +23,58 @@ ${role}
 Resume:
 ${resumeText}
 
-Return ONLY valid JSON.
+Return ONLY valid JSON in this exact structure:
 
 {
-  "role":"${role}",
-  "readinessPercent":85,
-  "matchedSkills":[
-    {"name":"React"},
-    {"name":"JavaScript"}
+  "role": "${role}",
+  "readinessPercent": 85,
+  "matchedSkills": [
+    {"name": "React"},
+    {"name": "JavaScript"}
   ],
-  "missingSkills":[
-    {"name":"Node.js"},
-    {"name":"MongoDB"}
+  "missingSkills": [
+    {"name": "Node.js"},
+    {"name": "MongoDB"}
   ],
-  "strengths":[
+  "strengths": [
     "Good React knowledge",
     "Strong JavaScript"
   ],
-  "overallSummary":"Good resume with scope for backend improvement."
+  "overallSummary": "Good resume with scope for backend improvement."
 }
 `;
 
-    console.log("Calling Gemini...");
+        console.log("Calling Gemini...");
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: prompt,
-    });
+        const response = await ai.models.generateContent({
+            model: "gemini-3.6-flash",
+            contents: prompt,
+        });
 
-    console.log("Gemini Response:");
-    console.dir(response, { depth: null });
+        console.log("Gemini Response received");
 
-    const text = response.text;
+        const text = response.text;
 
-    console.log("Response Text:");
-    console.log(text);
+        console.log("Response Text:");
+        console.log(text);
 
-    const cleanText = text
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+        const cleanText = text
+            .replace(/```json/g, "")
+            .replace(/```/g, "")
+            .trim();
 
-    const json = JSON.parse(cleanText);
+        const json = JSON.parse(cleanText);
 
-    return res.json(json);
+        return res.json(json);
 
-  } catch (err) {
-    console.error("========== ERROR ==========");
-    console.error(err);
+    } catch (err) {
+        console.error("========== ERROR ==========");
+        console.error(err);
 
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
+        return res.status(500).json({
+            error: err.message || "Something went wrong",
+        });
+    }
 });
 
 export default router;

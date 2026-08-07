@@ -16,14 +16,12 @@ function App() {
 
   const location = useLocation();
 
-
   const hideLayout =
     location.pathname === "/login" ||
     location.pathname === "/signup";
 
 
   return (
-
     <>
 
       {!hideLayout && <Navbar />}
@@ -36,53 +34,43 @@ function App() {
           element={<Home />} 
         />
 
-
         <Route 
           path="/resume" 
           element={<ResumeUpload />} 
         />
-
 
         <Route 
           path="/analysis" 
           element={<Analysis />} 
         />
 
-
         <Route 
           path="/about" 
           element={<About />} 
         />
-
 
         <Route 
           path="/dashboard" 
           element={<Dashboard />} 
         />
 
-
         <Route 
           path="/login" 
           element={<Login />} 
         />
-
 
         <Route 
           path="/signup" 
           element={<Signup />} 
         />
 
-
       </Routes>
 
 
       {!hideLayout && <Footer />}
 
-
     </>
-
   );
-
 }
 
 

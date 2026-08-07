@@ -28,9 +28,7 @@ function Navbar() {
         </NavLink>
 
 
-        <NavLink to="/dashboard">
-          Dashboard
-        </NavLink>
+       
 
       </div>
 

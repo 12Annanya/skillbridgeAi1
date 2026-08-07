@@ -1,0 +1,144 @@
+.salary-container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px 0;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: 0.4s ease;
+}
+
+.salary-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+}
+
+
+/* Heading */
+.salary-container h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #00f5ff, #7b2cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.salary-container p {
+    color: #cbd5e1;
+    margin-bottom: 25px;
+}
+
+
+/* Input section */
+.salary-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 20px;
+}
+
+
+.salary-inputs input,
+.salary-inputs select {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    outline: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+
+.salary-inputs input:focus,
+.salary-inputs select:focus {
+    border-color: #00f5ff;
+    box-shadow: 0 0 15px rgba(0,245,255,0.4);
+}
+
+
+/* Button */
+.predict-btn {
+    margin-top: 25px;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg,#00f5ff,#7b2cff);
+    color: white;
+
+    transition: 0.3s ease;
+}
+
+
+.predict-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0,245,255,0.6);
+}
+
+
+/* Result card */
+.salary-result {
+    margin-top: 30px;
+    padding: 25px;
+
+    border-radius: 18px;
+    background: rgba(0,0,0,0.25);
+
+    text-align: center;
+    animation: slideUp 0.6s ease;
+}
+
+
+.salary-result h3 {
+    font-size: 22px;
+    color: #00f5ff;
+}
+
+
+.salary-value {
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 10px;
+
+    background: linear-gradient(90deg,#00f5ff,#7b2cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* Animation */
+@keyframes slideUp {
+
+    from {
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* Mobile */
+@media(max-width:600px){
+
+    .salary-container{
+        padding:20px;
+    }
+
+    .salary-container h2{
+        font-size:22px;
+    }
+
+    .salary-value{
+        font-size:30px;
+    }
+
+}

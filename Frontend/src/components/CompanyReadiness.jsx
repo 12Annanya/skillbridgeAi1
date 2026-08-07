@@ -1,6 +1,5 @@
 import React from "react";
 import "./AISummary.css";
-
 function AISummary({ data }) {
 
 return (
