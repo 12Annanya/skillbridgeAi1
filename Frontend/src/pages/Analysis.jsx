@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Analysis.css";
 
 import {
@@ -14,15 +14,165 @@ import {
   FaExclamationTriangle,
   FaRobot,
   FaDownload,
+  FaPlay,
+  FaPause,
 } from "react-icons/fa";
 
 const Analysis = () => {
+  const [isGraphMoving, setIsGraphMoving] = useState(false);
+
+  // ================= DOWNLOAD REPORT =================
+  const downloadReport = () => {
+    const report = `
+<!DOCTYPE html>
+<html>
+<head>
+<title>ReadyGraph AI Career Report</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  color: #222;
+  line-height: 1.6;
+}
+
+h1 {
+  color: #5b50e6;
+}
+
+h2 {
+  margin-top: 30px;
+  color: #333;
+}
+
+.card {
+  padding: 20px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.score {
+  font-size: 28px;
+  font-weight: bold;
+  color: #5b50e6;
+}
+
+li {
+  margin: 8px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ReadyGraph AI Career Report</h1>
+
+<p>
+AI-powered analysis of your career readiness,
+skills and improvement areas.
+</p>
+
+<div class="card">
+<h2>ATS Score</h2>
+<div class="score">82%</div>
+</div>
+
+<div class="card">
+<h2>Career Readiness</h2>
+<div class="score">78%</div>
+</div>
+
+<div class="card">
+<h2>Skills Matched</h2>
+<div class="score">12 / 16</div>
+</div>
+
+<div class="card">
+<h2>Career Level</h2>
+<p>Intermediate</p>
+</div>
+
+<div class="card">
+<h2>Strengths</h2>
+<ul>
+<li>Strong React and JavaScript knowledge</li>
+<li>Good frontend development experience</li>
+<li>Multiple practical projects</li>
+<li>Understanding of DSA fundamentals</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Areas to Improve</h2>
+<ul>
+<li>Improve backend development</li>
+<li>Practice system design</li>
+<li>Strengthen advanced DSA</li>
+<li>Add measurable project achievements</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>AI Recommendation</h2>
+<p>
+Focus on DSA, backend development and
+industry-level projects.
+</p>
+</div>
+
+<div class="card">
+<h2>Salary Prediction</h2>
+<p><strong>Current Salary:</strong> ₹6 LPA</p>
+<p><strong>Potential Salary:</strong> ₹18 LPA</p>
+<p><strong>Estimated Growth:</strong> +200%</p>
+</div>
+
+<div class="card">
+<h2>Career Roadmap</h2>
+<ol>
+<li>Master DSA</li>
+<li>Improve Backend Development</li>
+<li>Build Industry-Level Projects</li>
+<li>Learn System Design</li>
+<li>Prepare for Interviews</li>
+</ol>
+</div>
+
+</body>
+</html>
+`;
+
+    const blob = new Blob([report], {
+      type: "text/html",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "ReadyGraph-AI-Career-Report.html";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="analysis-page">
 
       {/* ================= HEADER ================= */}
+
       <section className="analysis-header">
+
         <div>
+
           <div className="header-badge">
             <FaBrain />
             AI CAREER INTELLIGENCE
@@ -36,82 +186,114 @@ const Analysis = () => {
             Get a complete AI-powered overview of your skills,
             career readiness and growth opportunities.
           </p>
+
         </div>
 
         <div className="header-icon">
           <FaRobot />
         </div>
+
       </section>
 
 
       {/* ================= TOP STATS ================= */}
+
       <section className="stats-grid">
 
         <div className="stat-card blue">
+
           <div className="stat-icon">
             <FaChartLine />
           </div>
 
           <div>
             <p>ATS Score</p>
-            <h2>82<span>%</span></h2>
+
+            <h2>
+              82<span>%</span>
+            </h2>
+
             <small>
               <FaArrowUp /> 12% improvement
             </small>
           </div>
+
         </div>
 
 
         <div className="stat-card purple">
+
           <div className="stat-icon">
             <FaRocket />
           </div>
 
           <div>
             <p>Career Readiness</p>
-            <h2>78<span>%</span></h2>
+
+            <h2>
+              78<span>%</span>
+            </h2>
+
             <small>
               <FaArrowUp /> Strong progress
             </small>
           </div>
+
         </div>
 
 
         <div className="stat-card green">
+
           <div className="stat-icon">
             <FaCode />
           </div>
 
           <div>
             <p>Skills Matched</p>
-            <h2>12<span>/16</span></h2>
+
+            <h2>
+              12<span>/16</span>
+            </h2>
+
             <small>
               <FaCheckCircle /> 75% matched
             </small>
           </div>
+
         </div>
 
 
         <div className="stat-card orange">
+
           <div className="stat-icon">
             <FaBrain />
           </div>
 
           <div>
             <p>Career Level</p>
-            <h2 className="level-text">Intermediate</h2>
-            <small>Ready to grow</small>
+
+            <h2 className="level-text">
+              Intermediate
+            </h2>
+
+            <small>
+              Ready to grow
+            </small>
           </div>
+
         </div>
 
       </section>
 
 
-      {/* ================= WEEKLY PROGRESS ================= */}
+      {/* ================= WEEKLY GRAPH ================= */}
+
       <section className="dashboard-card chart-card">
 
         <div className="section-heading">
+
           <div>
+
             <span className="section-label">
               PERFORMANCE
             </span>
@@ -122,40 +304,71 @@ const Analysis = () => {
             </h2>
 
             <p>
-              Your study activity over the last 7 days
+              Click the graph to watch your study progress move
             </p>
+
           </div>
+
 
           <div className="chart-score">
-            <strong>32 hrs</strong>
-            <span>This week</span>
+
+            <strong>
+              32 hrs
+            </strong>
+
+            <span>
+              This week
+            </span>
+
           </div>
+
         </div>
 
-        <div className="fake-chart">
+
+        {/* CLICKABLE GRAPH */}
+
+        <div
+          className={`fake-chart ${
+            isGraphMoving ? "graph-active" : ""
+          }`}
+          onClick={() =>
+            setIsGraphMoving((prev) => !prev)
+          }
+          title="Click to animate graph"
+        >
 
           <div className="chart-y">
+
             <span>8h</span>
             <span>6h</span>
             <span>4h</span>
             <span>2h</span>
             <span>0h</span>
+
           </div>
+
 
           <div className="chart-area">
 
+            {/* GRID */}
+
             <div className="grid-line"></div>
             <div className="grid-line"></div>
             <div className="grid-line"></div>
             <div className="grid-line"></div>
             <div className="grid-line"></div>
+
+
+            {/* SVG GRAPH */}
 
             <svg
               viewBox="0 0 700 250"
               preserveAspectRatio="none"
               className="study-svg"
             >
+
               <defs>
+
                 <linearGradient
                   id="studyGradient"
                   x1="0"
@@ -163,10 +376,11 @@ const Analysis = () => {
                   y1="0"
                   y2="1"
                 >
+
                   <stop
                     offset="0%"
                     stopColor="#6c63ff"
-                    stopOpacity="0.4"
+                    stopOpacity="0.45"
                   />
 
                   <stop
@@ -174,10 +388,16 @@ const Analysis = () => {
                     stopColor="#6c63ff"
                     stopOpacity="0"
                   />
+
                 </linearGradient>
+
               </defs>
 
+
+              {/* AREA */}
+
               <path
+                className="graph-area-path"
                 d="
                 M0 190
                 C70 150 80 120 120 130
@@ -193,7 +413,11 @@ const Analysis = () => {
                 fill="url(#studyGradient)"
               />
 
+
+              {/* LINE */}
+
               <path
+                className="graph-line"
                 d="
                 M0 190
                 C70 150 80 120 120 130
@@ -206,11 +430,27 @@ const Analysis = () => {
                 fill="none"
                 stroke="#6c63ff"
                 strokeWidth="4"
+                strokeLinecap="round"
+              />
+
+
+              {/* MOVING DOT */}
+
+              <circle
+                className="moving-point"
+                cx="700"
+                cy="35"
+                r="6"
+                fill="#6c63ff"
               />
 
             </svg>
 
+
+            {/* DAYS */}
+
             <div className="chart-days">
+
               <span>Mon</span>
               <span>Tue</span>
               <span>Wed</span>
@@ -218,6 +458,26 @@ const Analysis = () => {
               <span>Fri</span>
               <span>Sat</span>
               <span>Sun</span>
+
+            </div>
+
+
+            {/* GRAPH STATUS */}
+
+            <div className="graph-status">
+
+              {isGraphMoving ? (
+                <>
+                  <FaPause />
+                  Live Progress
+                </>
+              ) : (
+                <>
+                  <FaPlay />
+                  Click to Animate
+                </>
+              )}
+
             </div>
 
           </div>
@@ -228,10 +488,13 @@ const Analysis = () => {
 
 
       {/* ================= AI SUMMARY ================= */}
+
       <section className="dashboard-card ai-summary">
 
         <div className="section-heading">
+
           <div>
+
             <span className="section-label">
               AI INSIGHTS
             </span>
@@ -244,21 +507,23 @@ const Analysis = () => {
             <p>
               Personalized insights generated from your resume
             </p>
+
           </div>
 
           <div className="ai-badge">
             <FaBrain />
             AI Powered
           </div>
+
         </div>
 
 
         <div className="summary-grid">
 
-          {/* Strengths */}
           <div className="insight-card strengths">
 
             <div className="insight-title">
+
               <div className="insight-icon">
                 <FaCheckCircle />
               </div>
@@ -267,6 +532,7 @@ const Analysis = () => {
                 <h3>Strengths</h3>
                 <span>What you're doing well</span>
               </div>
+
             </div>
 
             <ul>
@@ -279,10 +545,10 @@ const Analysis = () => {
           </div>
 
 
-          {/* Improvements */}
           <div className="insight-card weaknesses">
 
             <div className="insight-title">
+
               <div className="insight-icon">
                 <FaExclamationTriangle />
               </div>
@@ -291,6 +557,7 @@ const Analysis = () => {
                 <h3>Areas to Improve</h3>
                 <span>Skills that need attention</span>
               </div>
+
             </div>
 
             <ul>
@@ -305,7 +572,6 @@ const Analysis = () => {
         </div>
 
 
-        {/* Recommendation */}
         <div className="recommendation">
 
           <div className="recommendation-icon">
@@ -313,7 +579,10 @@ const Analysis = () => {
           </div>
 
           <div>
-            <span>AI RECOMMENDATION</span>
+
+            <span>
+              AI RECOMMENDATION
+            </span>
 
             <h3>
               Focus on DSA, backend development and
@@ -325,6 +594,7 @@ const Analysis = () => {
               DSA practice can significantly improve your placement
               readiness.
             </p>
+
           </div>
 
         </div>
@@ -333,13 +603,15 @@ const Analysis = () => {
 
 
       {/* ================= SALARY + CAREER ================= */}
+
       <section className="two-column">
 
-        {/* Salary */}
         <div className="dashboard-card salary-card">
 
           <div className="section-heading small">
+
             <div>
+
               <span className="section-label">
                 CAREER FORECAST
               </span>
@@ -348,7 +620,9 @@ const Analysis = () => {
                 <FaChartLine />
                 Salary Prediction
               </h2>
+
             </div>
+
           </div>
 
 
@@ -368,22 +642,32 @@ const Analysis = () => {
 
 
           <div className="growth-box">
+
             <div>
-              <span>Estimated Growth</span>
-              <strong>+200%</strong>
+
+              <span>
+                Estimated Growth
+              </span>
+
+              <strong>
+                +200%
+              </strong>
+
             </div>
 
             <FaArrowUp />
+
           </div>
 
         </div>
 
 
-        {/* Career level */}
         <div className="dashboard-card career-card">
 
           <div className="section-heading small">
+
             <div>
+
               <span className="section-label">
                 SKILL MATURITY
               </span>
@@ -392,38 +676,53 @@ const Analysis = () => {
                 <FaRocket />
                 Career Level
               </h2>
+
             </div>
+
           </div>
 
 
           <div className="career-level">
 
             <div className="level-item completed">
+
               <span>1</span>
+
               <div>
                 <strong>Beginner</strong>
                 <small>Completed</small>
               </div>
+
             </div>
+
 
             <div className="level-line active"></div>
 
+
             <div className="level-item current">
+
               <span>2</span>
+
               <div>
                 <strong>Intermediate</strong>
                 <small>Current Level</small>
               </div>
+
             </div>
+
 
             <div className="level-line"></div>
 
+
             <div className="level-item">
+
               <span>3</span>
+
               <div>
                 <strong>Advanced</strong>
                 <small>Next Goal</small>
               </div>
+
             </div>
 
           </div>
@@ -434,11 +733,13 @@ const Analysis = () => {
 
 
       {/* ================= DAILY STUDY ================= */}
+
       <section className="dashboard-card study-plan">
 
         <div className="section-heading">
 
           <div>
+
             <span className="section-label">
               PERSONALIZED LEARNING
             </span>
@@ -451,6 +752,7 @@ const Analysis = () => {
             <p>
               Recommended activities based on your skill gaps
             </p>
+
           </div>
 
           <div className="hours-badge">
@@ -463,56 +765,83 @@ const Analysis = () => {
         <div className="study-list">
 
           <div className="study-item">
+
             <div className="study-icon">
               <FaCode />
             </div>
 
             <div className="study-info">
+
               <div>
-                <strong>Data Structures & Algorithms</strong>
-                <span>2 hours</span>
+                <strong>
+                  Data Structures & Algorithms
+                </strong>
+
+                <span>
+                  2 hours
+                </span>
               </div>
 
               <div className="progress">
                 <div style={{ width: "80%" }}></div>
               </div>
+
             </div>
+
           </div>
 
 
           <div className="study-item">
+
             <div className="study-icon server">
               <FaServer />
             </div>
 
             <div className="study-info">
+
               <div>
-                <strong>Backend Development</strong>
-                <span>1.5 hours</span>
+                <strong>
+                  Backend Development
+                </strong>
+
+                <span>
+                  1.5 hours
+                </span>
               </div>
 
               <div className="progress">
                 <div style={{ width: "60%" }}></div>
               </div>
+
             </div>
+
           </div>
 
 
           <div className="study-item">
+
             <div className="study-icon project">
               <FaProjectDiagram />
             </div>
 
             <div className="study-info">
+
               <div>
-                <strong>Project Development</strong>
-                <span>2 hours</span>
+                <strong>
+                  Project Development
+                </strong>
+
+                <span>
+                  2 hours
+                </span>
               </div>
 
               <div className="progress">
                 <div style={{ width: "70%" }}></div>
               </div>
+
             </div>
+
           </div>
 
         </div>
@@ -521,11 +850,13 @@ const Analysis = () => {
 
 
       {/* ================= ROADMAP ================= */}
+
       <section className="dashboard-card roadmap">
 
         <div className="section-heading">
 
           <div>
+
             <span className="section-label">
               YOUR JOURNEY
             </span>
@@ -538,6 +869,7 @@ const Analysis = () => {
             <p>
               Follow these steps to become placement ready
             </p>
+
           </div>
 
         </div>
@@ -546,12 +878,14 @@ const Analysis = () => {
         <div className="roadmap-track">
 
           <div className="roadmap-step completed">
+
             <div className="step-number">
               <FaCheckCircle />
             </div>
 
             <h3>DSA</h3>
             <p>Master core concepts</p>
+
           </div>
 
 
@@ -559,12 +893,14 @@ const Analysis = () => {
 
 
           <div className="roadmap-step current">
+
             <div className="step-number">
               02
             </div>
 
             <h3>Backend</h3>
             <p>Build real APIs</p>
+
           </div>
 
 
@@ -572,12 +908,14 @@ const Analysis = () => {
 
 
           <div className="roadmap-step">
+
             <div className="step-number">
               03
             </div>
 
             <h3>Projects</h3>
             <p>Build industry projects</p>
+
           </div>
 
 
@@ -585,12 +923,14 @@ const Analysis = () => {
 
 
           <div className="roadmap-step">
+
             <div className="step-number">
               04
             </div>
 
             <h3>System Design</h3>
             <p>Learn architecture</p>
+
           </div>
 
 
@@ -598,12 +938,14 @@ const Analysis = () => {
 
 
           <div className="roadmap-step">
+
             <div className="step-number">
               05
             </div>
 
             <h3>Interviews</h3>
             <p>Crack placements</p>
+
           </div>
 
         </div>
@@ -612,11 +954,13 @@ const Analysis = () => {
 
 
       {/* ================= RESUME SUGGESTIONS ================= */}
+
       <section className="dashboard-card resume-suggestions">
 
         <div className="section-heading">
 
           <div>
+
             <span className="section-label">
               RESUME OPTIMIZATION
             </span>
@@ -629,6 +973,7 @@ const Analysis = () => {
             <p>
               Improve your resume with AI-generated recommendations
             </p>
+
           </div>
 
         </div>
@@ -643,7 +988,9 @@ const Analysis = () => {
               <FaExclamationTriangle />
             </div>
 
-            <h3>Current Resume</h3>
+            <h3>
+              Current Resume
+            </h3>
 
             <p>
               Resume has good projects but needs more
@@ -670,7 +1017,9 @@ const Analysis = () => {
               <FaCheckCircle />
             </div>
 
-            <h3>AI Improved Resume</h3>
+            <h3>
+              AI Improved Resume
+            </h3>
 
             <p>
               Add project impact, technical skills and
@@ -687,7 +1036,12 @@ const Analysis = () => {
         </div>
 
 
-        <button className="download-btn">
+        {/* DOWNLOAD BUTTON */}
+
+        <button
+          className="download-btn"
+          onClick={downloadReport}
+        >
           <FaDownload />
           Download AI Report
         </button>
@@ -696,11 +1050,15 @@ const Analysis = () => {
 
 
       {/* ================= FOOTER ================= */}
+
       <div className="analysis-footer">
+
         <FaBrain />
+
         <span>
           Powered by AI • Your career, intelligently planned.
         </span>
+
       </div>
 
     </div>

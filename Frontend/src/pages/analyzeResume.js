@@ -1,70 +1,46 @@
 export async function analyzeResume({
   resumeText,
   resumeFileBase64,
-  role
+  role,
 }) {
-
   const res = await fetch(
     "http://localhost:5000/api/analyze",
     {
-      method:"POST",
+      method: "POST",
 
-      headers:{
-        "Content-Type":"application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
 
-      body:JSON.stringify({
+      body: JSON.stringify({
         resumeText,
         resumeFileBase64,
-        role
-      })
+        role,
+      }),
     }
   );
 
-
   const data = await res.json();
 
+  console.log("AI DATA:", data);
 
-  console.log(
-    "AI DATA:",
-    data
-  );
-
-
-  if(data.error){
+  if (data.error) {
     throw new Error(data.error);
   }
 
-
   return data;
-
 }
 
+export function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
+    reader.onload = () => {
+      resolve(reader.result.split(",")[1]);
+    };
 
-export function fileToBase64(file){
+    reader.onerror = reject;
 
-return new Promise((resolve,reject)=>{
-
-const reader = new FileReader();
-
-
-reader.onload=()=>{
-
-resolve(
-reader.result.split(",")[1]
-);
-
-};
-
-
-reader.onerror=reject;
-
-
-reader.readAsDataURL(file);
-
-
-});
-
-
+    reader.readAsDataURL(file);
+  });
 }

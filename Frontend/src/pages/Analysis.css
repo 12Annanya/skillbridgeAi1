@@ -1207,3 +1207,131 @@
   }
 
 }
+
+/* ================= INTERACTIVE GRAPH ================= */
+
+.fake-chart {
+  cursor: pointer;
+  position: relative;
+}
+
+.fake-chart:hover {
+  transform: translateY(-2px);
+  transition: 0.3s ease;
+}
+
+.graph-line {
+  transition: d 0.8s ease;
+}
+
+.graph-area-path {
+  transition: opacity 0.5s ease;
+}
+
+.moving-point {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.graph-active .moving-point {
+  opacity: 1;
+  animation: graphPoint 2.5s ease-in-out infinite alternate;
+}
+
+.graph-active .graph-line {
+  animation: graphWave 3s ease-in-out infinite alternate;
+}
+
+.graph-active .graph-area-path {
+  animation: graphArea 3s ease-in-out infinite alternate;
+}
+
+@keyframes graphWave {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-8px) translateY(5px);
+  }
+
+  100% {
+    transform: translateX(8px) translateY(-5px);
+  }
+}
+
+@keyframes graphArea {
+  0% {
+    transform: translateX(0);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: translateX(-5px);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateX(7px);
+    opacity: 0.4;
+  }
+}
+
+@keyframes graphPoint {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-35px) translateY(18px);
+  }
+
+  100% {
+    transform: translateX(-70px) translateY(-15px);
+  }
+}
+
+
+/* Graph status */
+
+.graph-status {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  background: rgba(108, 99, 255, 0.12);
+
+  border: 1px solid rgba(108, 99, 255, 0.25);
+
+  color: #8c84ff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  pointer-events: none;
+}
+
+.graph-active .graph-status {
+  color: #39dfac;
+  background: rgba(57, 223, 172, 0.1);
+  border-color: rgba(57, 223, 172, 0.25);
+}
+
+
+/* Better graph interaction */
+
+.fake-chart:active {
+  transform: scale(0.995);
+}
+
+.study-svg {
+  overflow: visible;
+}
